@@ -63,6 +63,10 @@ public class Floor extends Block{
     /** Decoration block. Usually a rock. May be air. */
     public Block decoration = Blocks.air;
 
+    /** how good it is at conducting heat */
+    public float heatConduction = 1f;
+    public float temperature = 293f; //20 C
+
     protected TextureRegion[][] edges;
     protected Array<Block> blenders = new Array<>();
     protected IntSet blended = new IntSet();

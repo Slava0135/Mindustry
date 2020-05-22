@@ -165,6 +165,9 @@ public class Block extends UnlockableContent{
     public boolean instantTransfer = false;
     public boolean alwaysUnlocked = false;
 
+    /** From 0 to 1, shows how many heat will not be transferred to the floor compared to normal. */
+    public float heatIsolation = 0f;
+
     protected Prov<Tilec> entityType = null; //initialized later
     //TODO move
     public ObjectMap<Class<?>, Cons2> configurations = new ObjectMap<>();

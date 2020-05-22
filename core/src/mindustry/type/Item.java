@@ -23,6 +23,15 @@ public class Item extends UnlockableContent{
     public float radioactivity;
     /** drill hardness of the item */
     public int hardness = 0;
+
+    /** all these constants are used to calculate block stats using requirements
+    /** how good it is at conducting heat */
+    public float heatConduction = 1f;
+    /** how many heat you need to increase temperature by 1 Kelvin */
+    public float heatCapacity = 1000f;
+    /** when reached, heat will hurt */
+    public float maxTemperature = 600f; //in Kelvins
+
     /**
      * base material cost of this item, used for calculating place times
      * 1 cost = 1 tick added to build time

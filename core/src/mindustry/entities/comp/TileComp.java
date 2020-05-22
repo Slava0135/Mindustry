@@ -57,6 +57,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
     ItemModule items;
     LiquidModule liquids;
     ConsumeModule cons;
+    HeatModule heat;
 
     private transient float timeScale = 1f, timeScaleDuration;
 
