@@ -1,14 +1,18 @@
 package mindustry.world.modules;
 
+import arc.math.geom.Point2;
 import arc.struct.Array;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.gen.Tilec;
 import mindustry.type.ItemStack;
 import mindustry.world.Block;
+import mindustry.world.Edges;
+import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
 import static java.lang.Math.sqrt;
+import static mindustry.Vars.world;
 
 public class HeatModule extends BlockModule {
 
@@ -20,12 +24,14 @@ public class HeatModule extends BlockModule {
     private float temperature;
     private float maxTemperature;
 
-    private Floor floor;
-    private Block block;
+    private final Floor floor;
+    private final Block block;
+    private final Tile tile;
 
-    HeatModule(Floor floor, Block block) {
+    HeatModule(Floor floor, Block block, Tile tile) {
         this.floor = floor;
         this.block = block;
+        this.tile = tile;
         calculateConduction();
         calculateCapacity();
         calculateMaxTemperature();
@@ -36,11 +42,35 @@ public class HeatModule extends BlockModule {
     public void update(Array<Tilec> proximity) {
         floorExchange();
         for(Tilec tilec: proximity) {
+            shareHeat(tilec.heat(), getContactArea(tilec));
         }
     }
 
-    private void shareHeat(HeatModule other) {
+    private int getContactArea(Tilec tilec) {
+        int count = 0;
+        Point2[] nearby = Edges.getEdges(block.size);
+        for (Point2 point: nearby) {
+            if (world.ent(tile.x + point.x, tile.y + point.y) == tilec) {
+                count++;
+            }
+        }
+        return count;
+    }
 
+    private void shareHeat(HeatModule other, int contactArea) {
+        double delta =
+                contactArea
+                * (temperature - other.temperature) * (temperature - other.temperature)
+                * sqrt(heatConduction * other.heatConduction);
+        if (other.temperature > temperature) {
+            other.heat -= delta;
+            heat += delta;
+        } else {
+            other.heat += delta;
+            heat -= delta;
+        }
+        other.calculateTemperature();
+        calculateTemperature();
     }
 
     private void floorExchange() {
@@ -73,7 +103,7 @@ public class HeatModule extends BlockModule {
             sum += itemStack.item.heatCapacity * itemStack.amount;
             count += itemStack.amount;
         }
-        heatCapacity = sum / count;
+        heatCapacity = block.size * block.size * sum / count;
     }
 
     private void calculateMaxTemperature() {
