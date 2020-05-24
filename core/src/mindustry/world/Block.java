@@ -314,8 +314,8 @@ public class Block extends UnlockableContent{
         if(hasEntity()) {
             stats.add(BlockStat.heatIsolation, heatIsolation, StatUnit.percent);
             stats.add(BlockStat.heatCapacity, heatCapacity, StatUnit.none);
-            stats.add(BlockStat.heatConduction, heatCapacity, StatUnit.none);
-            stats.add(BlockStat.maxTemperature, heatCapacity, StatUnit.kelvins);
+            stats.add(BlockStat.heatConduction, heatConduction, StatUnit.none);
+            stats.add(BlockStat.maxTemperature, maxTemperature, StatUnit.kelvins);
         }
 
         consumes.display(stats);
@@ -608,8 +608,8 @@ public class Block extends UnlockableContent{
                 heatConduction += itemStack.item.heatConduction * itemStack.amount;
                 heatCapacity += itemStack.item.heatCapacity * itemStack.amount;
             }
-            maxTemperature /= (size * size * count);
-            heatConduction /= (size * size * count);
+            maxTemperature /= count;
+            heatConduction /= count;
             heatCapacity *= (double) size * size / count;
         }
 
