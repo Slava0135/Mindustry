@@ -20,7 +20,8 @@ public enum StatUnit{
     timesSpeed(false),
     percent(false),
     none,
-    items;
+    items,
+    kelvins;
 
     public final boolean space;
 

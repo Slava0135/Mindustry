@@ -5,7 +5,6 @@ import arc.struct.Array;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.gen.Tilec;
-import mindustry.type.ItemStack;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
@@ -17,12 +16,12 @@ import static mindustry.Vars.world;
 public class HeatModule extends BlockModule {
 
     private float heat;
-
-    private float heatConduction;
-    private float heatCapacity;
     //** in Kelvins */
     private float temperature;
-    private float maxTemperature;
+
+    public float getTemperature() {
+        return temperature;
+    }
 
     private final Floor floor;
     private final Block block;
@@ -32,9 +31,6 @@ public class HeatModule extends BlockModule {
         this.floor = floor;
         this.block = block;
         this.tile = tile;
-        calculateConduction();
-        calculateCapacity();
-        calculateMaxTemperature();
         temperature = floor.temperature;
         calculateHeat();
     }
@@ -61,7 +57,7 @@ public class HeatModule extends BlockModule {
         double delta =
                 contactArea
                 * (temperature - other.temperature) * (temperature - other.temperature)
-                * sqrt(heatConduction * other.heatConduction);
+                * sqrt(block.heatConduction * other.block.heatConduction);
         if (other.temperature > temperature) {
             other.heat -= delta;
             heat += delta;
@@ -77,7 +73,7 @@ public class HeatModule extends BlockModule {
         double delta =
                 block.heatIsolation
                 * (floor.temperature - temperature) * (floor.temperature - temperature)
-                * sqrt(floor.heatConduction * heatConduction);
+                * sqrt(floor.heatConduction * block.heatConduction);
         if (floor.temperature > temperature) {
             heat += delta;
         } else {
@@ -86,42 +82,17 @@ public class HeatModule extends BlockModule {
         calculateTemperature();
     }
 
-    private void calculateConduction() {
-        float sum = 0f;
-        float count = 0;
-        for (ItemStack itemStack: block.requirements) {
-            sum += itemStack.item.heatConduction * itemStack.amount;
-            count += itemStack.amount;
-        }
-        heatConduction = sum / count;
-    }
-
-    private void calculateCapacity() {
-        float sum = 0f;
-        float count = 0;
-        for (ItemStack itemStack: block.requirements) {
-            sum += itemStack.item.heatCapacity * itemStack.amount;
-            count += itemStack.amount;
-        }
-        heatCapacity = block.size * block.size * sum / count;
-    }
-
-    private void calculateMaxTemperature() {
-        float sum = 0f;
-        float count = 0;
-        for (ItemStack itemStack: block.requirements) {
-            sum += itemStack.item.maxTemperature * itemStack.amount;
-            count += itemStack.amount;
-        }
-       maxTemperature = sum / count;
-    }
-
     private void calculateTemperature() {
-        temperature = heat / heatCapacity;
+        temperature = heat / block.heatCapacity;
     }
 
     private void calculateHeat() {
-        heat = temperature * heatCapacity;
+        heat = temperature * block.heatCapacity;
+    }
+
+    public float heatValue() {
+        float value = heat / block.maxTemperature;
+        return value > 1 ? 1 : value;
     }
 
     @Override
@@ -132,9 +103,6 @@ public class HeatModule extends BlockModule {
     @Override
     public void read(Reads read) {
         heat = read.f();
-        calculateCapacity();
-        calculateConduction();
-        calculateMaxTemperature();
         calculateTemperature();
     }
 }

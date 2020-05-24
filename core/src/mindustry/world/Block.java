@@ -52,6 +52,15 @@ public class Block extends UnlockableContent{
     public float liquidPressure = 1f;
     public int dumpIncrement = 1;
 
+    /** From 0 to 1, shows how many heat will not be transferred to the floor compared to normal. */
+    public float heatIsolation = 0f;
+    /** when reached, heat will hurt */
+    public float maxTemperature = 600; //in Kelvins
+    /** how good it is at conducting heat */
+    public float heatConduction = 1;
+    /** how many heat you need to increase temperature by 1 Kelvin */
+    public float heatCapacity = 1000;
+
     public final BlockStats stats = new BlockStats();
     public final BlockBars bars = new BlockBars();
     public final Consumers consumes = new Consumers();
@@ -165,9 +174,6 @@ public class Block extends UnlockableContent{
     public float buildCostMultiplier = 1f;
     /** Whether this block has instant transfer.*/
     public boolean instantTransfer = false;
-
-    /** From 0 to 1, shows how many heat will not be transferred to the floor compared to normal. */
-    public float heatIsolation = 0f;
 
     protected Prov<Tilec> entityType = null; //initialized later
     //TODO move
@@ -305,6 +311,13 @@ public class Block extends UnlockableContent{
             stats.add(BlockStat.buildCost, new ItemListValue(false, requirements));
         }
 
+        if(hasEntity()) {
+            stats.add(BlockStat.heatIsolation, heatIsolation, StatUnit.percent);
+            stats.add(BlockStat.heatCapacity, heatCapacity, StatUnit.none);
+            stats.add(BlockStat.heatConduction, heatCapacity, StatUnit.none);
+            stats.add(BlockStat.maxTemperature, heatCapacity, StatUnit.kelvins);
+        }
+
         consumes.display(stats);
 
         // Note: Power stats are added by the consumers.
@@ -325,6 +338,10 @@ public class Block extends UnlockableContent{
             }
             bars.add("liquid", entity -> new Bar(() -> entity.liquids().get(current.get(entity)) <= 0.001f ? Core.bundle.get("bar.liquid") : current.get(entity).localizedName,
             () -> current.get(entity).barColor(), () -> entity.liquids().get(current.get(entity)) / liquidCapacity));
+        }
+
+        if(hasEntity()) {
+            bars.add("temperature", entity -> new Bar(name, Color.red, () -> entity.heat().heatValue()));
         }
 
         if(hasPower && consumes.hasPower()){
@@ -583,6 +600,20 @@ public class Block extends UnlockableContent{
             buildCost += stack.amount * stack.item.cost;
         }
         buildCost *= buildCostMultiplier;
+
+        if(requirements.length > 0) {
+            maxTemperature = heatConduction = heatCapacity = 0;
+            int count = 0;
+            for (ItemStack itemStack: requirements) {
+                count += itemStack.amount;
+                maxTemperature += itemStack.item.maxTemperature * itemStack.amount;
+                heatConduction += itemStack.item.heatConduction * itemStack.amount;
+                heatCapacity += itemStack.item.heatCapacity * itemStack.amount;
+            }
+            maxTemperature /= count;
+            heatConduction /= count;
+            heatCapacity *= (double) size * size / count;
+        }
 
         if(consumes.has(ConsumeType.power)) hasPower = true;
         if(consumes.has(ConsumeType.item)) hasItems = true;

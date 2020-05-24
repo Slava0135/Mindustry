@@ -47,7 +47,12 @@ public enum BlockStat{
 
     booster(StatCategory.optional),
     boostEffect(StatCategory.optional),
-    affinities(StatCategory.optional);
+    affinities(StatCategory.optional),
+
+    heatIsolation(StatCategory.heat),
+    heatConduction(StatCategory.heat),
+    heatCapacity(StatCategory.heat),
+    maxTemperature(StatCategory.heat);
 
     public final StatCategory category;
 

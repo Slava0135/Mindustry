@@ -10,7 +10,8 @@ public enum StatCategory{
     items,
     crafting,
     shooting,
-    optional;
+    optional,
+    heat;
 
     public String localized(){
         return Core.bundle.get("category." + name());
