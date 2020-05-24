@@ -21,7 +21,7 @@ import mindustry.world.modules.*;
 import static mindustry.Vars.*;
 
 public class CoreBlock extends StorageBlock{
-    public UnitType unitType = UnitTypes.phantom;
+    public UnitType unitType = UnitTypes.alpha;
 
     public CoreBlock(String name){
         super(name);
@@ -29,6 +29,7 @@ public class CoreBlock extends StorageBlock{
         solid = true;
         update = true;
         hasItems = true;
+        priority = TargetPriority.core;
         flags = EnumSet.of(BlockFlag.core, BlockFlag.producer, BlockFlag.unitModifier);
         unitCapModifier = 10;
         activeSound = Sounds.respawning;
@@ -48,6 +49,7 @@ public class CoreBlock extends StorageBlock{
         unit.set(entity);
         unit.impulse(0f, 8f);
         unit.controller(player);
+        unit.spawnedByCore(true);
         unit.add();
     }
 
@@ -63,7 +65,7 @@ public class CoreBlock extends StorageBlock{
             ));
 
         bars.add("units", e ->
-        new Bar(
+            new Bar(
                 () -> Core.bundle.format("bar.units", teamIndex.count(e.team()), Units.getCap(e.team())),
                 () -> Pal.power,
                 () -> (float)teamIndex.count(e.team()) / Units.getCap(e.team())
@@ -214,7 +216,7 @@ public class CoreBlock extends StorageBlock{
 
             if(heat > 0.001f){
                 Draw.draw(Layer.blockOver, () -> {
-                    Drawf.drawRespawn(this, heat, progress, time, unitType, lastRequested);
+                    Drawf.respawn(this, heat, progress, time, unitType, lastRequested);
                 });
             }
         }
