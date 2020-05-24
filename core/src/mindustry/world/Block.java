@@ -341,7 +341,7 @@ public class Block extends UnlockableContent{
         }
 
         if(hasEntity()) {
-            bars.add("temperature", entity -> new Bar(name, Color.red, () -> entity.heat().heatValue()));
+            bars.add("temperature", entity -> new Bar(Core.bundle.format("bar.temperature", entity.heat().getTemperature() - 273), Pal.heat, () -> entity.heat().overheatRate()));
         }
 
         if(hasPower && consumes.hasPower()){

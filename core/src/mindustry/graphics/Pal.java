@@ -50,7 +50,7 @@ public class Pal{
     stoneGray = Color.valueOf("8f8f8f"),
     engine = Color.valueOf("ffbb64"),
 
-    health = Color.valueOf("ff341c"),
+    health = Color.valueOf("98ffa9"),
     heal = Color.valueOf("98ffa9"),
     bar = Color.slate,
     accent = Color.valueOf("ffd37f"),
@@ -68,6 +68,7 @@ public class Pal{
     power = Color.valueOf("fbad67"),
     powerBar = Color.valueOf("ec7b4c"),
     powerLight = Color.valueOf("fbd367"),
+    heat = Color.valueOf("ff341c"),
     placing = accent,
 
     unitFront = Color.valueOf("ffa665"),
