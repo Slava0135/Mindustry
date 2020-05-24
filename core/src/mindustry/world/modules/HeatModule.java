@@ -91,7 +91,8 @@ public class HeatModule extends BlockModule {
     }
 
     public float overheatRate() {
-        return heat / block.maxTemperature;
+        float overheat = temperature / block.maxTemperature;
+        return Math.min(overheat, 1f);
     }
 
     @Override

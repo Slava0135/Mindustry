@@ -340,9 +340,7 @@ public class Block extends UnlockableContent{
             () -> current.get(entity).barColor(), () -> entity.liquids().get(current.get(entity)) / liquidCapacity));
         }
 
-        if(hasEntity()) {
-            bars.add("temperature", entity -> new Bar(Core.bundle.format("bar.temperature", entity.heat().getTemperature() - 273), Pal.heat, () -> entity.heat().overheatRate()));
-        }
+        bars.add("temperature", entity -> new Bar(() -> Core.bundle.format("bar.temperature", (entity.heat().getTemperature() - 273)), () -> Pal.heat, () -> (float) entity.heat().overheatRate()));
 
         if(hasPower && consumes.hasPower()){
             ConsumePower cons = consumes.getPower();
@@ -610,8 +608,8 @@ public class Block extends UnlockableContent{
                 heatConduction += itemStack.item.heatConduction * itemStack.amount;
                 heatCapacity += itemStack.item.heatCapacity * itemStack.amount;
             }
-            maxTemperature /= count;
-            heatConduction /= count;
+            maxTemperature /= (size * size * count);
+            heatConduction /= (size * size * count);
             heatCapacity *= (double) size * size / count;
         }
 
