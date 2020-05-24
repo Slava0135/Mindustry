@@ -71,7 +71,7 @@ public class HeatModule extends BlockModule {
 
     private void floorExchange() {
         double delta =
-                block.heatIsolation
+                (1 - block.heatIsolation)
                 * (floor.temperature - temperature) * (floor.temperature - temperature)
                 * sqrt(floor.heatConduction * block.heatConduction);
         if (floor.temperature > temperature) {
