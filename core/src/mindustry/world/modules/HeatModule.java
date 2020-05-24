@@ -65,7 +65,6 @@ public class HeatModule extends BlockModule {
             other.heat += delta;
             heat -= delta;
         }
-        System.out.println(heat);
         other.calculateTemperature();
         calculateTemperature();
     }
