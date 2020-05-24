@@ -57,7 +57,7 @@ public class HeatModule extends BlockModule {
         double delta =
                 contactArea
                 * (temperature - other.temperature) * (temperature - other.temperature)
-                * sqrt(block.heatConduction * other.block.heatConduction);
+                * sqrt(block.heatConduction * other.block.heatConduction) / 60;
         if (other.temperature > temperature) {
             other.heat -= delta;
             heat += delta;
@@ -65,6 +65,7 @@ public class HeatModule extends BlockModule {
             other.heat += delta;
             heat -= delta;
         }
+        System.out.println(heat);
         other.calculateTemperature();
         calculateTemperature();
     }
@@ -73,7 +74,7 @@ public class HeatModule extends BlockModule {
         double delta =
                 (1 - block.heatIsolation)
                 * (floor.temperature - temperature) * (floor.temperature - temperature)
-                * sqrt(floor.heatConduction * block.heatConduction);
+                * sqrt(floor.heatConduction * block.heatConduction) / 60;
         if (floor.temperature > temperature) {
             heat += delta;
         } else {
