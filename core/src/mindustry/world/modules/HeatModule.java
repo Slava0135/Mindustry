@@ -27,7 +27,7 @@ public class HeatModule extends BlockModule {
     private final Block block;
     private final Tile tile;
 
-    HeatModule(Floor floor, Block block, Tile tile) {
+    public HeatModule(Floor floor, Block block, Tile tile) {
         this.floor = floor;
         this.block = block;
         this.tile = tile;

@@ -85,6 +85,8 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
             add();
         }
 
+        heat = new HeatModule(floor(), block, tile);
+
         return this;
     }
 
@@ -111,6 +113,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         if(power != null) power.write(write);
         if(liquids != null) liquids.write(write);
         if(cons != null) cons.write(write);
+        heat.write(write);
     }
 
     public final void readBase(Reads read){
@@ -121,6 +124,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         if(power != null) power.read(read);
         if(liquids != null) liquids.read(read);
         if(cons != null) cons.read(read);
+        heat.read(read);
     }
 
     public void writeAll(Writes write){
@@ -1123,6 +1127,8 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         if(power != null){
             power.graph.update();
         }
+
+        heat.update(proximity);
 
         updateFlow = false;
     }
