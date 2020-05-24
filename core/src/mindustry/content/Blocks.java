@@ -135,6 +135,9 @@ public class Blocks implements ContentList{
             drownTime = 140f;
             cacheLayer = CacheLayer.water;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 273;
         }};
 
         water = new Floor("water"){{
@@ -146,6 +149,9 @@ public class Blocks implements ContentList{
             isLiquid = true;
             cacheLayer = CacheLayer.water;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 283;
         }};
 
         taintedWater = new Floor("tainted-water"){{
@@ -158,24 +164,36 @@ public class Blocks implements ContentList{
             isLiquid = true;
             cacheLayer = CacheLayer.water;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 283;
         }};
 
         darksandTaintedWater = new ShallowLiquid("darksand-tainted-water"){{
             speedMultiplier = 0.75f;
             statusDuration = 60f;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 293;
         }};
 
         sandWater = new ShallowLiquid("sand-water"){{
             speedMultiplier = 0.8f;
             statusDuration = 50f;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 293;
         }};
 
         darksandWater = new ShallowLiquid("darksand-water"){{
             speedMultiplier = 0.8f;
             statusDuration = 50f;
             albedo = 0.5f;
+
+            heatConduction = 600;
+            temperature = 293;
         }};
 
         tar = new Floor("tar"){{
@@ -215,12 +233,16 @@ public class Blocks implements ContentList{
 
         ignarock = new Floor("ignarock"){{
             attributes.set(Attribute.water, -0.1f);
+
+            temperature = 313;
         }};
 
         hotrock = new Floor("hotrock"){{
             attributes.set(Attribute.heat, 0.5f);
             attributes.set(Attribute.water, -0.2f);
             blendGroup = ignarock;
+
+            temperature = 333;
         }};
 
         magmarock = new Floor("magmarock"){{
@@ -228,16 +250,22 @@ public class Blocks implements ContentList{
             attributes.set(Attribute.water, -0.5f);
             updateEffect = Fx.magmasmoke;
             blendGroup = ignarock;
+
+            temperature = 373;
         }};
 
         sand = new Floor("sand"){{
             itemDrop = Items.sand;
             playerUnmineable = true;
+
+            temperature = 303;
         }};
 
         darksand = new Floor("darksand"){{
             itemDrop = Items.sand;
             playerUnmineable = true;
+
+            temperature = 303;
         }};
 
         ((ShallowLiquid)darksandTaintedWater).set(Blocks.taintedWater, Blocks.darksand);
@@ -259,18 +287,25 @@ public class Blocks implements ContentList{
 
         snow = new Floor("snow"){{
             attributes.set(Attribute.water, 0.2f);
+
+            temperature = 263;
         }};
 
         ice = new Floor("ice"){{
             dragMultiplier = 0.35f;
             speedMultiplier = 0.9f;
             attributes.set(Attribute.water, 0.4f);
+
+            heatConduction = 2;
+            temperature = 253;
         }};
 
         iceSnow = new Floor("ice-snow"){{
             dragMultiplier = 0.6f;
             variants = 3;
             attributes.set(Attribute.water, 0.3f);
+
+            temperature = 258;
         }};
 
         cliffs = new StaticWall("cliffs"){{
@@ -371,30 +406,64 @@ public class Blocks implements ContentList{
 
         metalFloor = new Floor("metal-floor"){{
             variants = 0;
+
+            heatConduction = 500;
         }};
 
         metalFloorDamaged = new Floor("metal-floor-damaged"){{
             variants = 3;
+
+            heatConduction = 500;
         }};
 
         metalFloor2 = new Floor("metal-floor-2"){{
             variants = 0;
+
+            heatConduction = 500;
         }};
 
         metalFloor3 = new Floor("metal-floor-3"){{
             variants = 0;
+
+            heatConduction = 500;
         }};
 
         metalFloor5 = new Floor("metal-floor-5"){{
             variants = 0;
+
+            heatConduction = 500;
         }};
 
-        darkPanel1 = new Floor("dark-panel-1"){{ variants = 0; }};
-        darkPanel2 = new Floor("dark-panel-2"){{ variants = 0; }};
-        darkPanel3 = new Floor("dark-panel-3"){{ variants = 0; }};
-        darkPanel4 = new Floor("dark-panel-4"){{ variants = 0; }};
-        darkPanel5 = new Floor("dark-panel-5"){{ variants = 0; }};
-        darkPanel6 = new Floor("dark-panel-6"){{ variants = 0; }};
+        darkPanel1 = new Floor("dark-panel-1"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
+        darkPanel2 = new Floor("dark-panel-2"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
+        darkPanel3 = new Floor("dark-panel-3"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
+        darkPanel4 = new Floor("dark-panel-4"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
+        darkPanel5 = new Floor("dark-panel-5"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
+        darkPanel6 = new Floor("dark-panel-6"){{
+            variants = 0;
+
+            heatConduction = 500;
+        }};
 
         darkMetal = new StaticWall("dark-metal");
 

@@ -16,22 +16,34 @@ public class Items implements ContentList{
             hardness = 1;
             cost = 0.5f;
             alwaysUnlocked = true;
+            maxTemperature = 1350;
+            heatConduction = 400;
+            heatCapacity = 385;
         }};
 
         lead = new Item("lead", Color.valueOf("8c7fa9")){{
             type = ItemType.material;
             hardness = 1;
             cost = 0.7f;
+            maxTemperature = 600;
+            heatConduction = 35;
+            heatCapacity = 130;
         }};
 
         metaglass = new Item("metaglass", Color.valueOf("ebeef5")){{
             type = ItemType.material;
             cost = 1.5f;
+            maxTemperature = 1500;
+            heatConduction = 1;
+            heatCapacity = 700;
         }};
 
         graphite = new Item("graphite", Color.valueOf("b2c6d2")){{
             type = ItemType.material;
             cost = 1f;
+            maxTemperature = 4000;
+            heatConduction = 300;
+            heatCapacity = 700;
         }};
 
         sand = new Item("sand", Color.valueOf("f7cba4")){{
@@ -48,6 +60,9 @@ public class Items implements ContentList{
             type = ItemType.material;
             hardness = 3;
             cost = 1f;
+            maxTemperature = 2000;
+            heatConduction = 20;
+            heatCapacity = 540;
         }};
 
         thorium = new Item("thorium", Color.valueOf("f9a3c7")){{
@@ -56,6 +71,9 @@ public class Items implements ContentList{
             hardness = 4;
             radioactivity = 1f;
             cost = 1.1f;
+            maxTemperature = 2000;
+            heatConduction = 50;
+            heatCapacity = 140;
         }};
 
         scrap = new Item("scrap", Color.valueOf("777777")){{
@@ -65,6 +83,9 @@ public class Items implements ContentList{
         silicon = new Item("silicon", Color.valueOf("53565c")){{
             type = ItemType.material;
             cost = 0.8f;
+            maxTemperature = 1700;
+            heatConduction = 150;
+            heatCapacity = 800;
         }};
 
         plastanium = new Item("plastanium", Color.valueOf("cbd97f")){{
@@ -72,16 +93,25 @@ public class Items implements ContentList{
             flammability = 0.1f;
             explosiveness = 0.2f;
             cost = 1.3f;
+            maxTemperature = 2000;
+            heatConduction = 20;
+            heatCapacity = 540;
         }};
 
         phasefabric = new Item("phase-fabric", Color.valueOf("f4ba6e")){{
             type = ItemType.material;
             cost = 1.3f;
             radioactivity = 0.6f;
+            maxTemperature = 2000;
+            heatConduction = 50;
+            heatCapacity = 140;
         }};
 
         surgealloy = new Item("surge-alloy", Color.valueOf("f3e979")){{
             type = ItemType.material;
+            maxTemperature = 10000;
+            heatConduction = 1000;
+            heatCapacity = 1000;
         }};
 
         sporePod = new Item("spore-pod", Color.valueOf("7457ce")){{

@@ -15,7 +15,7 @@ import static mindustry.Vars.world;
 
 public class HeatModule extends BlockModule {
 
-    private float heat;
+    public float heat;
     //** in Kelvins */
     private float temperature;
 

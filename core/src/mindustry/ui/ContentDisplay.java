@@ -93,6 +93,12 @@ public class ContentDisplay{
         table.row();
         table.add(Core.bundle.format("item.radioactivity", (int)(item.radioactivity * 100)));
         table.row();
+        table.add(Core.bundle.format("item.heatconduction", (item.heatConduction)));
+        table.row();
+        table.add(Core.bundle.format("item.heatcapacity", (item.heatCapacity)));
+        table.row();
+        table.add(Core.bundle.format("item.maxtemperature", (item.maxTemperature)));
+        table.row();
     }
 
     public static void displayLiquid(Table table, Liquid liquid){
