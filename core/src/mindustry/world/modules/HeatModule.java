@@ -18,6 +18,8 @@ public class HeatModule extends BlockModule {
     private float heat;
     //** in Kelvins */
     private float temperature;
+    private float floorConduction;
+    private float floorTemperature;
 
     public void changeHeat(float delta) {
         heat += delta;
@@ -27,15 +29,22 @@ public class HeatModule extends BlockModule {
         return temperature;
     }
 
-    private final Floor floor;
     private final Block block;
     private final Tile tile;
 
-    public HeatModule(Floor floor, Block block, Tile tile) {
-        this.floor = floor;
+    public HeatModule(Block block, Tile tile) {
         this.block = block;
         this.tile = tile;
-        temperature = floor.temperature;
+        Array<Tile> linked = tile.getLinkedTiles(new Array<>());
+        floorConduction = 0;
+        floorTemperature = 0;
+        for (Tile lTile: linked) {
+            floorConduction += lTile.floor().heatConduction;
+            floorTemperature += lTile.floor().temperature;
+        }
+        floorConduction /= linked.size;
+        floorTemperature /= linked.size;
+        temperature = floorTemperature;
         calculateHeat();
     }
 
@@ -76,9 +85,9 @@ public class HeatModule extends BlockModule {
     private void floorExchange() {
         double delta =
                 (1 - block.heatIsolation)
-                * (floor.temperature - temperature) * (floor.temperature - temperature)
-                * sqrt(floor.heatConduction * block.heatConduction) / 1000;
-        if (floor.temperature > temperature) {
+                * (floorTemperature - temperature) * (floorTemperature - temperature)
+                * sqrt(floorConduction * block.heatConduction) / 1000;
+        if (floorTemperature > temperature) {
             heat += delta;
         } else {
             heat -= delta;

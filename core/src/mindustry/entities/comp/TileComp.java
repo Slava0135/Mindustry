@@ -85,7 +85,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
             add();
         }
 
-        heat = new HeatModule(floor(), block, tile);
+        heat = new HeatModule(block, tile);
 
         return this;
     }
@@ -1129,6 +1129,9 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         }
 
         heat.update(proximity);
+        if (heat.overheatRate() == 1f) {
+            block.health -= (heat.getTemperature() / block.maxTemperature - 1) * maxHealth();
+        }
 
         updateFlow = false;
     }
