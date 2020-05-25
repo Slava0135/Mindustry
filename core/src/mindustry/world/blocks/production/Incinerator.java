@@ -23,14 +23,10 @@ public class Incinerator extends Block{
     }
 
     public class IncineratorEntity extends TileEntity{
-        public float heat;
-
         @Override
         public void updateTile(){
             if(consValid() && efficiency() > 0.9f){
-                heat = Mathf.lerpDelta(heat, 1f, 0.04f);
-            }else{
-                heat = Mathf.lerpDelta(heat, 0f, 0.02f);
+                heat().changeHeat(block.consumes.power(1).usage * 1000);
             }
         }
 
@@ -38,19 +34,17 @@ public class Incinerator extends Block{
         public void draw(){
             super.draw();
 
-            if(heat > 0f){
-                float g = 0.3f;
-                float r = 0.06f;
+            float g = 0.3f;
+            float r = 0.06f;
 
-                Draw.alpha(((1f - g) + Mathf.absin(Time.time(), 8f, g) + Mathf.random(r) - r) * heat);
+            Draw.alpha(((1f - g) + Mathf.absin(Time.time(), 8f, g) + Mathf.random(r) - r) * heat().overheatRate());
 
-                Draw.tint(flameColor);
-                Fill.circle(x, y, 2f);
-                Draw.color(1f, 1f, 1f, heat);
-                Fill.circle(x, y, 1f);
+            Draw.tint(flameColor);
+            Fill.circle(x, y, 2f);
+            Draw.color(1f, 1f, 1f, heat.overheatRate());
+            Fill.circle(x, y, 1f);
 
-                Draw.color();
-            }
+            Draw.color();
         }
 
         @Override
@@ -62,7 +56,7 @@ public class Incinerator extends Block{
 
         @Override
         public boolean acceptItem(Tilec source, Item item){
-            return heat > 0.5f;
+            return heat.getTemperature() > 373;
         }
 
         @Override
@@ -74,7 +68,7 @@ public class Incinerator extends Block{
 
         @Override
         public boolean acceptLiquid(Tilec source, Liquid liquid, float amount){
-            return heat > 0.5f;
+            return heat.getTemperature() > 373;
         }
     }
 }

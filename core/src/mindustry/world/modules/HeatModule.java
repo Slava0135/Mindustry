@@ -15,10 +15,14 @@ import static mindustry.Vars.world;
 
 public class HeatModule extends BlockModule {
 
-    public float heat;
+    private float heat;
     //** in Kelvins */
     private float temperature;
 
+    public void changeHeat(float delta) {
+        heat += delta;
+        calculateTemperature();
+    }
     public float getTemperature() {
         return temperature;
     }
