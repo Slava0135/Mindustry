@@ -1003,6 +1003,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
 
     public void collision(Bulletc other){
         damage(other.damage());
+        heat.changeHeat(other.damage() * 1000);
     }
 
     public void removeFromProximity(){
