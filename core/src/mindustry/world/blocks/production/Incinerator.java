@@ -26,7 +26,7 @@ public class Incinerator extends Block{
         @Override
         public void updateTile(){
             if(consValid() && efficiency() > 0.9f){
-                heat().changeHeat(block.consumes.power(1).usage * 1000);
+                heat().changeHeat(block.consumes.power(1).usage * 1000 * power.status);
             }
         }
 
