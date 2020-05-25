@@ -33,13 +33,28 @@ public class UnitTypes implements ContentList{
     //water
     public static @EntityDef({Unitc.class, WaterMovec.class, Commanderc.class}) UnitType vanguard;
 
+    //special block unit type
+    public static @EntityDef({Unitc.class, BlockUnitc.class}) UnitType block;
+
     @Override
     public void load(){
+        block = new UnitType("block"){
+            {
+                speed = 0f;
+                hitsize = 0f;
+                health = 1;
+                rotateSpeed = 360f;
+            }
+
+            @Override
+            public boolean isHidden(){
+                return true;
+            }
+        };
 
         dagger = new UnitType("dagger"){{
             speed = 0.5f;
             hitsize = 8f;
-            mass = 1.75f;
             health = 130;
             weapons.add(new Weapon("large-weapon"){{
                 reload = 14f;
@@ -55,7 +70,6 @@ public class UnitTypes implements ContentList{
             tier = 2;
 
             speed = 0.4f;
-            mass = 3.5f;
             hitsize = 9f;
             range = 10f;
             health = 460;
@@ -76,7 +90,6 @@ public class UnitTypes implements ContentList{
         crawler = new UnitType("crawler"){{
             speed = 0.65f;
             hitsize = 8f;
-            mass = 1.75f;
             health = 120;
             sway = 0.25f;
             weapons.add(new Weapon(){{
@@ -151,7 +164,6 @@ public class UnitTypes implements ContentList{
             tier = 3;
 
             speed = 0.38f;
-            mass = 5f;
             hitsize = 13f;
             rotateSpeed = 3f;
             targetAir = false;
@@ -175,7 +187,6 @@ public class UnitTypes implements ContentList{
 
             speed = 0.4f;
             drag = 0.4f;
-            mass = 5f;
             hitsize = 10f;
             rotateSpeed = 3f;
             targetAir = false;
@@ -197,7 +208,6 @@ public class UnitTypes implements ContentList{
             speed = 3f;
             accel = 0.08f;
             drag = 0.01f;
-            mass = 1.5f;
             flying = true;
             health = 75;
             faceTarget = false;
@@ -220,7 +230,6 @@ public class UnitTypes implements ContentList{
 
             health = 220;
             speed = 2f;
-            mass = 3f;
             accel = 0.08f;
             drag = 0.016f;
             flying = true;
@@ -246,7 +255,6 @@ public class UnitTypes implements ContentList{
             speed = 1.1f;
             accel = 0.02f;
             drag = 0.05f;
-            mass = 30f;
             rotateSpeed = 0.5f;
             flying = true;
             lowAltitude = true;
@@ -270,7 +278,6 @@ public class UnitTypes implements ContentList{
             speed = 1.3f;
             drag = 0.1f;
             hitsize = 8f;
-            mass = 1.75f;
             health = 130;
             immunities = ObjectSet.with(StatusEffects.wet);
             weapons.add(new Weapon("mount-weapon"){{
@@ -322,18 +329,17 @@ public class UnitTypes implements ContentList{
             mineSpeed = 2f;
             buildSpeed = 0.5f;
             drag = 0.05f;
-            mass = 2f;
             speed = 2.4f;
             rotateSpeed = 15f;
             accel = 0.1f;
             range = 70f;
             itemCapacity = 30;
-            health = 400;
+            health = 80f;
             engineOffset = 6f;
             hitsize = 8f;
 
             weapons.add(new Weapon("small-basic-weapon"){{
-                reload = 20f;
+                reload = 25f;
                 x = -1f;
                 y = -1f;
                 shootX = 3.5f;
@@ -347,7 +353,6 @@ public class UnitTypes implements ContentList{
         phantom = new UnitType("phantom"){{
             flying = true;
             drag = 0.05f;
-            mass = 2f;
             speed = 3f;
             rotateSpeed = 15f;
             accel = 0.3f;
@@ -365,10 +370,8 @@ public class UnitTypes implements ContentList{
             drillTier = -1;
             speed = 0.6f;
             hitsize = 9f;
-            mass = 1.75f;
             boostMultiplier = 2f;
             itemCapacity = 15;
-            mass = 0.9f;
             health = 160f;
             buildSpeed = 0.9f;
             canBoost = true;
