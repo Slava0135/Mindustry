@@ -242,7 +242,7 @@ public class Blocks implements ContentList{
             attributes.set(Attribute.water, -0.2f);
             blendGroup = ignarock;
 
-            temperature = 333;
+            temperature = 353;
         }};
 
         magmarock = new Floor("magmarock"){{
@@ -251,7 +251,7 @@ public class Blocks implements ContentList{
             updateEffect = Fx.magmasmoke;
             blendGroup = ignarock;
 
-            temperature = 373;
+            temperature = 393;
         }};
 
         sand = new Floor("sand"){{
@@ -407,62 +407,62 @@ public class Blocks implements ContentList{
         metalFloor = new Floor("metal-floor"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         metalFloorDamaged = new Floor("metal-floor-damaged"){{
             variants = 3;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         metalFloor2 = new Floor("metal-floor-2"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         metalFloor3 = new Floor("metal-floor-3"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         metalFloor5 = new Floor("metal-floor-5"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         darkPanel1 = new Floor("dark-panel-1"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
         darkPanel2 = new Floor("dark-panel-2"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
         darkPanel3 = new Floor("dark-panel-3"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
         darkPanel4 = new Floor("dark-panel-4"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
         darkPanel5 = new Floor("dark-panel-5"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
         darkPanel6 = new Floor("dark-panel-6"){{
             variants = 0;
 
-            heatConduction = 500;
+            heatConduction = 20;
         }};
 
         darkMetal = new StaticWall("dark-metal");
