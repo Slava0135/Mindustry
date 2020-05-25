@@ -327,6 +327,7 @@ public class Block extends UnlockableContent{
 
     public void setBars(){
         bars.add("health", entity -> new Bar("blocks.health", Pal.health, entity::healthf).blink(Color.white));
+        bars.add("temperature", entity -> new Bar(() -> Core.bundle.format("bar.temperature", (Math.round(entity.heat().getTemperature() * 10) / 10f - 273)), () -> Pal.heat, () -> (float) entity.heat().overheatRate()));
 
         if(hasLiquids){
             Func<Tilec, Liquid> current;
@@ -339,8 +340,6 @@ public class Block extends UnlockableContent{
             bars.add("liquid", entity -> new Bar(() -> entity.liquids().get(current.get(entity)) <= 0.001f ? Core.bundle.get("bar.liquid") : current.get(entity).localizedName,
             () -> current.get(entity).barColor(), () -> entity.liquids().get(current.get(entity)) / liquidCapacity));
         }
-
-        bars.add("temperature", entity -> new Bar(() -> Core.bundle.format("bar.temperature", (Math.round(entity.heat().getTemperature() * 10) / 10f - 273)), () -> Pal.heat, () -> (float) entity.heat().overheatRate()));
 
         if(hasPower && consumes.hasPower()){
             ConsumePower cons = consumes.getPower();

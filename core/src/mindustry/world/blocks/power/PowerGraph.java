@@ -124,6 +124,7 @@ public class PowerGraph{
             Consumers consumes = battery.block().consumes;
             if(consumes.hasPower()){
                 battery.power().status *= (1f-consumedPowerPercentage);
+                battery.heat().changeHeat(consumes.getPower().capacity * (1f-consumedPowerPercentage) * 100);
             }
         }
         return used;
@@ -140,7 +141,9 @@ public class PowerGraph{
             if(consumes.hasPower()){
                 ConsumePower consumePower = consumes.getPower();
                 if(consumePower.capacity > 0f){
-                    battery.power().status += (1f-battery.power().status) * chargedPercent;
+                    float delta = (1f-battery.power().status) * chargedPercent;
+                    battery.power().status += delta;
+                    battery.heat().changeHeat(consumes.getPower().capacity * delta * 100);
                 }
             }
         }

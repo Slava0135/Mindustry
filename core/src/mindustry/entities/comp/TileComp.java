@@ -1129,8 +1129,8 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         }
 
         heat.update(proximity);
-        if (heat.overheatRate() == 1f) {
-            block.health -= (heat.getTemperature() / block.maxTemperature - 1) * maxHealth();
+        if (heat.isOverheated()) {
+            damage((heat.getTemperature() / block.maxTemperature - 1) * maxHealth() / 60);
         }
 
         updateFlow = false;

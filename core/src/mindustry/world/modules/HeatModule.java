@@ -8,7 +8,6 @@ import mindustry.gen.Tilec;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.Floor;
 
 import static java.lang.Math.sqrt;
 import static mindustry.Vars.world;
@@ -106,6 +105,10 @@ public class HeatModule extends BlockModule {
     public float overheatRate() {
         float overheat = temperature / block.maxTemperature;
         return Math.min(overheat, 1f);
+    }
+
+    public boolean isOverheated() {
+        return temperature > block.maxTemperature;
     }
 
     @Override
