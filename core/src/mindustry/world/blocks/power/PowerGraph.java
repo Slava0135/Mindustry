@@ -5,6 +5,7 @@ import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.gen.*;
+import mindustry.world.blocks.sandbox.PowerSource;
 import mindustry.world.consumers.*;
 
 public class PowerGraph{
@@ -226,7 +227,7 @@ public class PowerGraph{
         lastUsageFraction = Mathf.zero(rawProduced) ? 1f : Mathf.clamp(powerNeeded / rawProduced);
 
         for (Tilec producer: producers) {
-            if (producer.getPowerProduction() < 100000) {
+            if (!(producer.block() instanceof PowerSource)) {
                 producer.heat().changeHeat(producer.getPowerProduction() * 100);
             }
         }

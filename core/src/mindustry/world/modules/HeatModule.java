@@ -20,6 +20,10 @@ public class HeatModule extends BlockModule {
     private float floorConduction;
     private float floorTemperature;
 
+    public float getFloorTemperature() {
+        return floorTemperature;
+    }
+
     public void changeHeat(float delta) {
         heat += delta;
         calculateTemperature();

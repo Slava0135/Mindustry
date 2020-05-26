@@ -238,7 +238,6 @@ public class Blocks implements ContentList{
         }};
 
         hotrock = new Floor("hotrock"){{
-            attributes.set(Attribute.heat, 0.5f);
             attributes.set(Attribute.water, -0.2f);
             blendGroup = ignarock;
 
@@ -246,7 +245,6 @@ public class Blocks implements ContentList{
         }};
 
         magmarock = new Floor("magmarock"){{
-            attributes.set(Attribute.heat, 0.75f);
             attributes.set(Attribute.water, -0.5f);
             updateEffect = Fx.magmasmoke;
             blendGroup = ignarock;
@@ -1181,7 +1179,7 @@ public class Blocks implements ContentList{
 
         thermalGenerator = new ThermalGenerator("thermal-generator"){{
             requirements(Category.power, ItemStack.with(Items.copper, 40, Items.graphite, 35, Items.lead, 50, Items.silicon, 35, Items.metaglass, 40));
-            powerProduction = 1.8f;
+            powerProduction = 0.2f;
             generateEffect = Fx.redgeneratespark;
             size = 2;
         }};
