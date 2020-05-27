@@ -127,6 +127,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         if(liquids != null) liquids.read(read);
         if(cons != null) cons.read(read);
         heat.read(read);
+        heat = new HeatModule(block, tile, heat.getHeat());
     }
 
     public void writeAll(Writes write){

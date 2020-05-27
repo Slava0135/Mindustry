@@ -28,27 +28,31 @@ public class HeatModule extends BlockModule {
         heat += delta;
         calculateTemperature();
     }
+
+    public float getHeat() {
+        return heat;
+    }
     public float getTemperature() {
         return temperature;
     }
 
-    private final Block block;
-    private final Tile tile;
+    Block block;
+    Tile tile;
 
     public HeatModule(Block block, Tile tile) {
         this.block = block;
         this.tile = tile;
-        Array<Tile> linked = tile.getLinkedTiles(new Array<>());
-        floorConduction = 0;
-        floorTemperature = 0;
-        for (Tile lTile: linked) {
-            floorConduction += lTile.floor().heatConduction;
-            floorTemperature += lTile.floor().temperature;
-        }
-        floorConduction /= linked.size;
-        floorTemperature /= linked.size;
+        getFloorStats();
         temperature = floorTemperature;
         calculateHeat();
+    }
+
+    public HeatModule(Block block, Tile tile, float heat) {
+        this.block = block;
+        this.tile = tile;
+        getFloorStats();
+        this.heat = heat;
+        calculateTemperature();
     }
 
     public void update(Array<Tilec> proximity) {
@@ -67,6 +71,18 @@ public class HeatModule extends BlockModule {
             }
         }
         return count;
+    }
+
+    private void getFloorStats() {
+        Array<Tile> linked = tile.getLinkedTiles(new Array<>());
+        floorConduction = 0;
+        floorTemperature = 0;
+        for (Tile lTile: linked) {
+            floorConduction += lTile.floor().heatConduction;
+            floorTemperature += lTile.floor().temperature;
+        }
+        floorConduction /= linked.size;
+        floorTemperature /= linked.size;
     }
 
     private void shareHeat(HeatModule other, int contactArea) {
@@ -123,6 +139,5 @@ public class HeatModule extends BlockModule {
     @Override
     public void read(Reads read) {
         heat = read.f();
-        calculateTemperature();
     }
 }
