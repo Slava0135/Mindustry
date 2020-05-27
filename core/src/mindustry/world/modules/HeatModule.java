@@ -36,8 +36,8 @@ public class HeatModule extends BlockModule {
         return temperature;
     }
 
-    Block block;
-    Tile tile;
+    private final Block block;
+    private final Tile tile;
 
     public HeatModule(Block block, Tile tile) {
         this.block = block;
