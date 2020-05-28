@@ -60,6 +60,8 @@ public class Block extends UnlockableContent{
     public float heatConduction = 1;
     /** how many heat you need to increase temperature by 1 Kelvin */
     public float heatCapacity = 1000;
+    /** how many heat will be produced per one energy used/created **/
+    public float heatPerEnergy = 100;
 
     public final BlockStats stats = new BlockStats();
     public final BlockBars bars = new BlockBars();

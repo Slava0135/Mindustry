@@ -1793,6 +1793,7 @@ public class Blocks implements ContentList{
         powerSource = new PowerSource("power-source"){{
             requirements(Category.power, BuildVisibility.sandboxOnly, ItemStack.with());
             alwaysUnlocked = true;
+            heatPerEnergy = 0;
         }};
 
         powerVoid = new PowerVoid("power-void"){{

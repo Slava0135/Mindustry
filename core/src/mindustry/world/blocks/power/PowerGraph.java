@@ -125,7 +125,7 @@ public class PowerGraph{
             Consumers consumes = battery.block().consumes;
             if(consumes.hasPower()){
                 battery.power().status *= (1f-consumedPowerPercentage);
-                battery.heat().changeHeat(consumes.getPower().capacity * (1f-consumedPowerPercentage) * 100);
+                battery.heat().changeHeat(consumes.getPower().capacity * (1f-consumedPowerPercentage) * battery.block().heatPerEnergy);
             }
         }
         return used;
@@ -144,7 +144,7 @@ public class PowerGraph{
                 if(consumePower.capacity > 0f){
                     float delta = (1f-battery.power().status) * chargedPercent;
                     battery.power().status += delta;
-                    battery.heat().changeHeat(consumes.getPower().capacity * delta * 100);
+                    battery.heat().changeHeat(consumes.getPower().capacity * delta * battery.block().heatPerEnergy);
                 }
             }
         }
@@ -163,7 +163,7 @@ public class PowerGraph{
                         // Add an equal percentage of power to all buffers, based on the global power coverage in this graph
                         float maximumRate = consumePower.requestedPower(consumer) * coverage * consumer.delta();
                         consumer.power().status = Mathf.clamp(consumer.power().status + maximumRate / consumePower.capacity);
-                        consumer.heat().changeHeat(consumes.getPower().capacity * consumer.power().status * 100);
+                        consumer.heat().changeHeat(consumes.getPower().capacity * consumer.power().status * consumer.block().heatPerEnergy);
                     }
                 }else{
                     //valid consumers get power as usual
@@ -227,9 +227,7 @@ public class PowerGraph{
         lastUsageFraction = Mathf.zero(rawProduced) ? 1f : Mathf.clamp(powerNeeded / rawProduced);
 
         for (Tilec producer: producers) {
-            if (!(producer.block() instanceof PowerSource)) {
-                producer.heat().changeHeat(producer.getPowerProduction() * 100);
-            }
+            producer.heat().changeHeat(producer.getPowerProduction() * producer.block().heatPerEnergy);
         }
     }
 
