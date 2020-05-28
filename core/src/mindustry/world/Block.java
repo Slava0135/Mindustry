@@ -50,7 +50,6 @@ public class Block extends UnlockableContent{
     public int itemCapacity = 10;
     public float liquidCapacity = 10f;
     public float liquidPressure = 1f;
-    public int dumpIncrement = 1;
 
     /** From 0 to 1, shows how many heat will not be transferred to the floor compared to normal. */
     public float heatIsolation = 0f;

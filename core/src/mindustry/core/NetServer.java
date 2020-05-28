@@ -549,7 +549,7 @@ public class NetServer implements ApplicationListener{
         connection.viewHeight = viewHeight;
 
         //disable shooting when a mech flies
-        if(!player.dead() && player.unit().isFlying() && !player.unit().type().flying){
+        if(!player.dead() && player.unit().isFlying() && player.unit() instanceof Mechc){
             shooting = false;
         }
 
@@ -640,7 +640,7 @@ public class NetServer implements ApplicationListener{
             fbuffer.position(0);
 
             //now, put the new position, rotation and baserotation into the buffer so it can be read
-            if(unit instanceof Legsc) fbuffer.put(baseRotation); //base rotation is optional
+            if(unit instanceof Mechc) fbuffer.put(baseRotation); //base rotation is optional
             fbuffer.put(rotation); //rotation is always there
             fbuffer.put(newx);
             fbuffer.put(newy);

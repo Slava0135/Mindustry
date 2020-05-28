@@ -15,7 +15,7 @@ import arc.util.*;
 import arc.util.ArcAnnotate.*;
 import arc.util.io.*;
 import mindustry.annotations.Annotations.*;
-import mindustry.audio.SoundLoop;
+import mindustry.audio.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
@@ -65,14 +65,32 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
 
     private transient boolean sleeping;
     private transient float sleepTime;
+    private transient boolean initialized;
 
     /** Sets this tile entity data to this and adds it if necessary. */
     public Tilec init(Tile tile, Team team, boolean shouldAdd){
+        if(!initialized){
+            create(tile.block(), team);
+        }
         this.tile = tile;
-        this.block = tile.block();
-        this.team = team;
 
         set(tile.drawx(), tile.drawy());
+
+        if(shouldAdd){
+            add();
+        }
+
+        created();
+
+        return this;
+    }
+
+    /** Sets up all the necessary variables, but does not add this entity anywhere. */
+    public Tilec create(Block block, Team team){
+        this.tile = emptyTile;
+        this.block = block;
+        this.team = team;
+
         if(block.activeSound != Sounds.none){
             sound = new SoundLoop(block.activeSound, block.activeSoundVolume);
         }
@@ -81,11 +99,15 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         maxHealth(block.health);
         timer(new Interval(block.timers));
 
-        if(shouldAdd){
-            add();
+        cons = new ConsumeModule(this);
+        if(block.hasItems) items = new ItemModule();
+        if(block.hasLiquids) liquids = new LiquidModule();
+        if(block.hasPower){
+            power = new PowerModule();
+            power.graph.add(this);
         }
 
-        created();
+        initialized = true;
 
         heat = new HeatModule(block, tile);
 
@@ -390,7 +412,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
      * @return whether the payload was moved successfully
      */
     public boolean dumpPayload(@NonNull Payload todump){
-        int dump = rotation();
+        int dump = tile.data;
 
         if(proximity.size == 0) return false;
 
@@ -426,7 +448,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
     }
 
     public void dumpLiquid(Liquid liquid){
-        int dump = rotation() / block.dumpIncrement;
+        int dump = tile.data;
 
         for(int i = 0; i < proximity.size; i++){
             incrementDump(proximity.size);
@@ -521,7 +543,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
      */
     public void offload(Item item){
         Array<Tilec> proximity = proximity();
-        int dump = rotation() / block.dumpIncrement;
+        int dump = tile.data;
         useContent(item);
 
         for(int i = 0; i < proximity.size; i++){
@@ -541,7 +563,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
      */
     public boolean put(Item item){
         Array<Tilec> proximity = proximity();
-        int dump = rotation() / block.dumpIncrement;
+        int dump = tile.data;
         useContent(item);
 
         for(int i = 0; i < proximity.size; i++){
@@ -569,7 +591,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         if(!block.hasItems || items.total() == 0 || (todump != null && !items.has(todump))) return false;
 
         Array<Tilec> proximity = proximity();
-        int dump = rotation() / block.dumpIncrement;
+        int dump = tile.data;
 
         if(proximity.size == 0) return false;
 
@@ -604,7 +626,7 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
     }
 
     public void incrementDump(int prox){
-        rotation((byte)((rotation() + block.dumpIncrement) % (prox * block.dumpIncrement)));
+        tile.data = (byte)((tile.data + 1) % prox);
     }
 
     /** Used for dumping items. */

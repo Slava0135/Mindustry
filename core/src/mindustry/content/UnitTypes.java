@@ -1,6 +1,7 @@
 package mindustry.content;
 
 import arc.graphics.*;
+import arc.math.*;
 import arc.struct.*;
 import mindustry.annotations.Annotations.*;
 import mindustry.ctype.*;
@@ -12,10 +13,16 @@ import mindustry.type.*;
 public class UnitTypes implements ContentList{
 
     //ground
-    public static @EntityDef({Unitc.class, Legsc.class}) UnitType titan, dagger, crawler, fortress, eruptor, chaosArray, eradicator;
+    public static @EntityDef({Unitc.class, Mechc.class}) UnitType titan, dagger, crawler, fortress, eruptor, chaosArray, eradicator;
 
     //ground + builder
-    public static @EntityDef({Unitc.class, Legsc.class, Builderc.class}) UnitType oculon, tau;
+    public static @EntityDef({Unitc.class, Mechc.class, Builderc.class}) UnitType tau;
+
+    //ground + builder + miner + commander
+    public static @EntityDef({Unitc.class, Mechc.class, Builderc.class, Minerc.class, Commanderc.class}) UnitType oculon;
+
+    //legs
+    public static @EntityDef({Unitc.class, Legsc.class}) UnitType cix;
 
     //air
     public static @EntityDef({Unitc.class}) UnitType wraith, reaper, ghoul, revenant, lich;
@@ -29,6 +36,9 @@ public class UnitTypes implements ContentList{
     //air + building + mining
     //TODO implement other starter drones
     public static @EntityDef({Unitc.class, Builderc.class, Minerc.class}) UnitType alpha, beta, gamma;
+
+    //air + building + mining + payload
+    public static @EntityDef({Unitc.class, Builderc.class, Minerc.class, Payloadc.class}) UnitType trident;
 
     //water
     public static @EntityDef({Unitc.class, WaterMovec.class, Commanderc.class}) UnitType vanguard;
@@ -63,6 +73,29 @@ public class UnitTypes implements ContentList{
                 ejectEffect = Fx.shellEjectSmall;
                 bullet = Bullets.standardCopper;
             }});
+        }};
+
+        cix = new UnitType("cix"){{
+            drag = 0.1f;
+            speed = 0.8f;
+            hitsize = 9f;
+            health = 140;
+
+            legCount = 6;
+            rotateShooting = false;
+
+            for(boolean b : Mathf.booleans){
+                weapons.add(
+                new Weapon("missiles-mount"){{
+                    reload = 20f;
+                    x = 4f * Mathf.sign(b);
+                    rotate = true;
+                    mirror = false;
+                    flipSprite = !b;
+                    shake = 1f;
+                    bullet = Bullets.missileSwarm;
+                }});
+            }
         }};
 
         titan = new UnitType("titan"){{
@@ -237,6 +270,7 @@ public class UnitTypes implements ContentList{
             engineOffset = 7.8f;
             range = 140f;
             faceTarget = false;
+
             weapons.add(new Weapon(){{
                 x = 3f;
                 shootY = 0f;
@@ -395,6 +429,45 @@ public class UnitTypes implements ContentList{
                     colors = new Color[]{Pal.heal.cpy().a(0.4f), Pal.heal, Color.white};
                 }};
             }});
+        }};
+
+        trident = new UnitType("trident"){{
+            //wraith.upgrade = this;
+            tier = 3;
+
+            health = 500;
+            speed = 2f;
+            accel = 0.05f;
+            drag = 0.016f;
+            lowAltitude = true;
+            flying = true;
+            engineOffset = 10.5f;
+            rotateShooting = false;
+            hitsize = 14f;
+            engineSize = 3f;
+
+            for(boolean b : Mathf.booleans){
+                weapons.add(
+                new Weapon("heal-weapon-mount"){{
+                    reload = 25f;
+                    x = 8f * Mathf.sign(b);
+                    y = -6f;
+                    rotate = true;
+                    mirror = false;
+                    flipSprite = !b;
+                    bullet = Bullets.healBulletBig;
+                }},
+                new Weapon("heal-weapon-mount"){{
+                    reload = 15f;
+                    x = 4f * Mathf.sign(b);
+                    y = 5f;
+                    rotate = true;
+                    mirror = false;
+                    flipSprite = !b;
+                    bullet = Bullets.healBullet;
+                }}
+                );
+            }
         }};
         
         /*

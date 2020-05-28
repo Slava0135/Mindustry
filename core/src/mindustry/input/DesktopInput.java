@@ -4,7 +4,6 @@ import arc.*;
 import arc.Graphics.*;
 import arc.Graphics.Cursor.*;
 import arc.graphics.g2d.*;
-import arc.input.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.*;
@@ -25,6 +24,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.meta.*;
 
 import static arc.Core.scene;
 import static mindustry.Vars.*;
@@ -209,31 +209,6 @@ public class DesktopInput extends InputHandler{
             if(Core.input.keyDown(Binding.respawn) && !player.dead() && !player.unit().spawnedByCore()){
                 Call.onUnitClear(player);
                 controlledType = null;
-            }
-
-            //TODO this is for debugging, remove later
-            if(Core.input.keyTap(KeyCode.g) && !player.dead() && player.unit() instanceof Commanderc){
-                Commanderc commander = (Commanderc)player.unit();
-
-                if(commander.isCommanding()){
-                    commander.clearCommand();
-                }else{
-
-                    FormationPattern pattern = new SquareFormation();
-                    Formation formation = new Formation(new Vec3(player.x(), player.y(), player.unit().rotation()), pattern);
-                    formation.slotAssignmentStrategy = new DistanceAssignmentStrategy(pattern);
-
-                    units.clear();
-
-                    Fx.commandSend.at(player);
-                    Units.nearby(player.team(), player.x(), player.y(), 200f, u -> {
-                        if(u.isAI()){
-                            units.add(u);
-                        }
-                    });
-
-                    commander.command(formation, units);
-                }
             }
         }
 
@@ -579,16 +554,16 @@ public class DesktopInput extends InputHandler{
         float speed = unit.type().speed * Mathf.lerp(1f, unit.type().canBoost ? unit.type().boostMultiplier : 1f, unit.elevation()) * strafePenalty;
         float xa = Core.input.axis(Binding.move_x);
         float ya = Core.input.axis(Binding.move_y);
-        boolean boosted = (!unit.type().flying && unit.isFlying());
+        boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
         movement.set(xa, ya).nor().scl(speed);
         float mouseAngle = Angles.mouseAngle(unit.x(), unit.y());
-        boolean aimCursor = omni && isShooting && unit.type().hasWeapons() && unit.type().faceTarget && !boosted;
+        boolean aimCursor = omni && isShooting && unit.type().hasWeapons() && unit.type().faceTarget && !boosted && unit.type().rotateShooting;
 
         if(aimCursor){
             unit.lookAt(mouseAngle);
         }else{
-            if(!unit.vel().isZero(0.01f)){
+            if(unit.moving()){
                 unit.lookAt(unit.vel().angle());
             }
         }
@@ -607,5 +582,53 @@ public class DesktopInput extends InputHandler{
 
         isBoosting = Core.input.keyDown(Binding.boost) && !movement.isZero();
         player.boosting(isBoosting);
+
+        if(unit instanceof Payloadc){
+            Payloadc pay = (Payloadc)unit;
+
+            if(Core.input.keyTap(Binding.pickupCargo) && pay.payloads().size < unit.type().payloadCapacity){
+                Unitc target = Units.closest(player.team(), pay.x(), pay.y(), 30f, u -> u.isAI() && u.isGrounded());
+                if(target != null){
+                    pay.pickup(target);
+                }else if(!pay.hasPayload()){
+                    Tilec tile = world.entWorld(pay.x(), pay.y());
+                    if(tile != null && tile.team() == unit.team() && tile.block().synthetic() && tile.block().buildVisibility != BuildVisibility.hidden && tile.block().size <= 3){
+                        pay.pickup(tile);
+                    }
+                }
+            }
+
+            if(Core.input.keyTap(Binding.dropCargo)){
+                pay.dropLastPayload();
+            }
+        }
+
+        if(unit instanceof Commanderc){
+            Commanderc commander = (Commanderc)unit;
+
+            if(Core.input.keyTap(Binding.command)){
+                if(commander.isCommanding()){
+                    commander.clearCommand();
+                }else{
+                    FormationPattern pattern = new SquareFormation();
+                    Formation formation = new Formation(new Vec3(player.x(), player.y(), player.unit().rotation()), pattern);
+                    formation.slotAssignmentStrategy = new DistanceAssignmentStrategy(pattern);
+
+                    units.clear();
+
+                    Fx.commandSend.at(player);
+                    Units.nearby(player.team(), player.x(), player.y(), 200f, u -> {
+                        if(u.isAI()){
+                            units.add(u);
+                        }
+                    });
+
+                    units.sort(u -> u.dst2(player.unit()));
+                    units.truncate(unit.type().commandLimit);
+
+                    commander.command(formation, units);
+                }
+            }
+        }
     }
 }
