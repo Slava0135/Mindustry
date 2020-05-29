@@ -313,7 +313,7 @@ public class Block extends UnlockableContent{
         }
 
         if(hasEntity()) {
-            stats.add(BlockStat.heatIsolation, heatIsolation, StatUnit.percent);
+            stats.add(BlockStat.heatIsolation, heatIsolation * 100, StatUnit.percent);
             stats.add(BlockStat.heatCapacity, heatCapacity, StatUnit.none);
             stats.add(BlockStat.heatConduction, heatConduction, StatUnit.none);
             stats.add(BlockStat.maxTemperature, maxTemperature, StatUnit.kelvins);

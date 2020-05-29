@@ -19,6 +19,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.experimental.*;
+import mindustry.world.blocks.heat.HeatBlock;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.liquid.*;
 import mindustry.world.blocks.power.*;
@@ -77,6 +78,9 @@ public class Blocks implements ContentList{
 
     //units
     groundFactory, airFactory, navalFactory, basicReconstructor, repairPoint,
+
+    //heat
+    fan, heater, heatTube, heatCapacitor,
 
     //misc experimental
 
@@ -1841,6 +1845,36 @@ public class Blocks implements ContentList{
         new LegacyCommandCenter("legacy-command-center");
 
         //endregion
+        //region heat
+
+        fan = new HeatBlock("fan") {{
+            requirements(Category.effect, ItemStack.with(Items.copper, 50, Items.lead, 50));
+            hasPower = true;
+            consumes.power(.5f);
+            size = 1;
+            heatPerEnergy = -250;
+        }};
+
+        heater = new HeatBlock("heater") {{
+            requirements(Category.effect, ItemStack.with(Items.copper, 50, Items.lead, 50));
+            hasPower = true;
+            consumes.power(.5f);
+            size = 1;
+            heatPerEnergy = 1000;
+        }};
+
+        heatTube = new HeatBlock("heat-tube") {{
+            requirements(Category.effect, ItemStack.with(Items.copper, 1));
+            size = 1;
+            heatIsolation = 1f;
+        }};
+
+        heatCapacitor = new HeatBlock("heat-capacitor") {{
+            requirements(Category.effect, ItemStack.with(Items.copper, 24));
+            size = 1;
+            health = 320;
+        }};
+        //end region
         //region experimental
 
         blockForge = new BlockForge("block-forge"){{

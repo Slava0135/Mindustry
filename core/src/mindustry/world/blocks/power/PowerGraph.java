@@ -162,7 +162,6 @@ public class PowerGraph{
                         // Add an equal percentage of power to all buffers, based on the global power coverage in this graph
                         float maximumRate = consumePower.requestedPower(consumer) * coverage * consumer.delta();
                         consumer.power().status = Mathf.clamp(consumer.power().status + maximumRate / consumePower.capacity);
-                        consumer.heat().changeHeat(consumes.getPower().capacity * consumer.power().status * consumer.block().heatPerEnergy);
                     }
                 }else{
                     //valid consumers get power as usual
@@ -227,6 +226,15 @@ public class PowerGraph{
 
         for (Tilec producer: producers) {
             producer.heat().changeHeat(producer.getPowerProduction() * producer.block().heatPerEnergy);
+        }
+        for(Tilec consumer : consumers){
+            Consumers consumes = consumer.block().consumes;
+            if(consumes.hasPower()){
+                ConsumePower consumePower = consumes.getPower();
+                if(otherConsumersAreValid(consumer, consumePower)){
+                    consumer.heat().changeHeat(consumer.power().status * consumes.getPower().requestedPower(consumer) * consumer.block().heatPerEnergy);
+                }
+            }
         }
     }
 
