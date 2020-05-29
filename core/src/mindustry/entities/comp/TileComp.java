@@ -82,6 +82,8 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
 
         created();
 
+        heat = new HeatModule(block, tile);
+
         return this;
     }
 
@@ -108,8 +110,6 @@ abstract class TileComp implements Posc, Teamc, Healthc, Tilec, Timerc, QuadTree
         }
 
         initialized = true;
-
-        heat = new HeatModule(block, tile);
 
         return this;
     }

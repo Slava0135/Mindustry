@@ -318,7 +318,6 @@ public class Block extends UnlockableContent{
             stats.add(BlockStat.heatConduction, heatConduction, StatUnit.none);
             stats.add(BlockStat.maxTemperature, maxTemperature, StatUnit.kelvins);
         }
-
         consumes.display(stats);
 
         // Note: Power stats are added by the consumers.
