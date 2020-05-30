@@ -9,28 +9,12 @@ import mindustry.world.Block;
 import mindustry.world.meta.BlockGroup;
 
 public class HeatBlock extends Block {
-    public int variants = 0;
-
     public HeatBlock(String name){
         super(name);
         solid = true;
         destructible = true;
         group = BlockGroup.none;
         update = true;
-    }
-
-    @Override
-    public void load(){
-        super.load();
-
-        if(variants != 0){
-            variantRegions = new TextureRegion[variants];
-
-            for(int i = 0; i < variants; i++){
-                variantRegions[i] = Core.atlas.find(name + (i + 1));
-            }
-            region = variantRegions[0];
-        }
     }
 
     @Override
@@ -47,11 +31,7 @@ public class HeatBlock extends Block {
 
         @Override
         public void draw(){
-            if(variants == 0){
-                Draw.rect(region, x, y);
-            }else{
-                Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], x, y);
-            }
+            Draw.rect(region, x, y);
         }
     }
 }

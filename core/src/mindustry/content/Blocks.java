@@ -19,6 +19,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.experimental.*;
+import mindustry.world.blocks.heat.Fan;
 import mindustry.world.blocks.heat.HeatBlock;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.liquid.*;
@@ -1847,12 +1848,12 @@ public class Blocks implements ContentList{
         //endregion
         //region heat
 
-        fan = new HeatBlock("fan") {{
-            requirements(Category.effect, ItemStack.with(Items.copper, 50, Items.lead, 50));
+        fan = new Fan("fan") {{
+            requirements(Category.effect, ItemStack.with(Items.copper, 100, Items.lead, 50, Items.graphite, 20));
             hasPower = true;
             consumes.power(.5f);
-            size = 1;
-            heatPerEnergy = -250;
+            size = 2;
+            heatPerEnergy = -1000;
         }};
 
         heater = new HeatBlock("heater") {{
