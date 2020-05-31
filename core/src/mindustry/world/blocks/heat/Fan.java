@@ -20,7 +20,6 @@ public class Fan extends HeatBlock {
 
     public float rotateSpeed = 16f;
 
-    public @Annotations.Load("@-rim") TextureRegion rimRegion;
     public @Annotations.Load("@-rotator") TextureRegion rotatorRegion;
     public @Annotations.Load("@-top") TextureRegion topRegion;
 
@@ -39,7 +38,6 @@ public class Fan extends HeatBlock {
             progress += delta() * speed;
             Draw.rect(region, x, y);
             super.drawCracks();
-            Draw.rect(rimRegion, x, y);
             Draw.rect(rotatorRegion, x, y, progress);
             Draw.rect(topRegion, x, y);
         }
